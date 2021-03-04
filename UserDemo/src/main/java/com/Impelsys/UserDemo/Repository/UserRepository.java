@@ -1,6 +1,6 @@
-package com.Impelsys.UserDemo;
+package com.Impelsys.UserDemo.Repository;
 
-import com.Impelsys.UserDemo.User;
+import com.Impelsys.UserDemo.Model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

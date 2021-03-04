@@ -1,5 +1,5 @@
 //JPA Entity : Creating the data model
-package com.Impelsys.UserDemo;
+package com.Impelsys.UserDemo.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
