@@ -1,19 +1,21 @@
+//JPA Entity : Creating the data model
 package com.Impelsys.UserDemo;
 
-//JPA Entity : Creating the data model
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name="userdata")
+
+@Entity   //specifies that the class is an entity
+@Table(name="userdata") //Specify the table name
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id //specifies the primary key of an entity
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //provides for the specification of generation strategies for the values of primary keys
     private  long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name") // Specifies the mapped column for a persistent property or field.
     private String firstName;
 
     @Column(name = "last_name")
@@ -25,43 +27,54 @@ public class User
     @Column(name = "phone")
     private long phone;
 
-    public long getId() {
+    //Getters and Setters for all the fields
+    public long getId()
+    {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(long id)
+    {
         this.id = id;
     }
 
-    public String getFirstName() {
+    public String getFirstName()
+    {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(String firstName)
+    {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    public String getLastName()
+    {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(String lastName)
+    {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
+    public String getEmail()
+    {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email)
+    {
         this.email = email;
     }
 
-    public long getPhone() {
+    public long getPhone()
+    {
         return phone;
     }
 
-    public void setPhone(long phone) {
+    public void setPhone(long phone)
+    {
         this.phone = phone;
     }
 }
