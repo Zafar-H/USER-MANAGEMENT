@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController //creation of RESTful web services.
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController
 {
     @Autowired
