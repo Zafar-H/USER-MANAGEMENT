@@ -12,6 +12,7 @@ public class ErrorHandlerController implements ErrorController{
     @RequestMapping("/error")
     @ResponseBody
     public String getErrorPath() {
-        return "<center><h1>Something went wrong</h1></center>";
+        return "<center><h1>Something went wrong!!!</h1>" +
+                "<h3>We're sorry, the page you are looking for does not exist!. Please Check the URL and try again</h3></center>";
     }
 }

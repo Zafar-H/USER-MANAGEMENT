@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController //creation of RESTful web services.
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class UserController
 {
     @Autowired
@@ -46,21 +48,27 @@ public class UserController
     }
 
     //Updating a user's details
-    @PutMapping("/users/{id}")
-    User updateUser(@RequestBody User updated_user, @PathVariable Long id) {
-
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setFirstName(updated_user.getFirstName());
-                    user.setLastName(updated_user.getLastName());
-                    user.setEmail(updated_user.getEmail());
-                    user.setPhone(updated_user.getPhone());
-                    return userRepository.save(user);
-                })
-                .orElseGet(() -> {
-                    updated_user.setId(id);
-                    return userRepository.save(updated_user);
-                });
+    @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}")
+    public void updateUser(@RequestBody User user)
+    {
+        userRepository.save(user);
     }
+    // @PutMapping("/users/{id}")
+//    User updateUser(@RequestBody User updated_user, @PathVariable Long id)
+//    {
+//
+//        return userRepository.findById(id)
+//                .map(user -> {
+//                    user.setFirstName(updated_user.getFirstName());
+//                    user.setLastName(updated_user.getLastName());
+//                    user.setEmail(updated_user.getEmail());
+//                    user.setPhone(updated_user.getPhone());
+//                    return userRepository.save(user);
+//                })
+//                .orElseGet(() -> {
+//                    updated_user.setId(id);
+//                    return userRepository.save(updated_user);
+//                });
+//    }
 
 }
