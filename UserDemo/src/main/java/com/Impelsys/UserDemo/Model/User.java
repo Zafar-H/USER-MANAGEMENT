@@ -15,7 +15,8 @@ public class User
     @GeneratedValue(strategy = GenerationType.IDENTITY) //provides for the specification of generation strategies for the values of primary keys
     private  long id;
 
-    @Column(name = "first_name") // Specifies the mapped column for a persistent property or field.
+    @Column(name = "first_name")
+    // Specifies the mapped column for a persistent property or field.
     private String firstName;
 
     @Column(name = "last_name")
