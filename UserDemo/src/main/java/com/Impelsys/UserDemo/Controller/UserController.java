@@ -2,7 +2,11 @@ package com.Impelsys.UserDemo.Controller;
 
 import com.Impelsys.UserDemo.Model.User;
 import com.Impelsys.UserDemo.Repository.UserRepository;
+import com.Impelsys.UserDemo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -15,14 +19,18 @@ public class UserController
 {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    UserService service;
 
-    //used to map Spring MVC controller methods
-
-    //Display all the user data
     @RequestMapping("/users")
-    public List <User> getUsers()
+    public ResponseEntity <List<User>> getAllUsers(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy)
     {
-        return userRepository.findAll();
+        List<User> list = service.getAllUsers(pageNo, pageSize, sortBy);
+
+        return new ResponseEntity<List<User>>(list, new HttpHeaders(), HttpStatus.OK);
     }
 
     //Display user data by id
