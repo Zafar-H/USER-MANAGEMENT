@@ -1,5 +1,6 @@
 package com.Impelsys.UserDemo.Controller;
 
+import com.Impelsys.UserDemo.Exception.RecordNotFoundException;
 import com.Impelsys.UserDemo.Model.User;
 import com.Impelsys.UserDemo.Repository.UserRepository;
 import com.Impelsys.UserDemo.Service.UserService;
@@ -11,18 +12,20 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
-@RestController //creation of RESTful web services.
+@RestController
+@RequestMapping("/users") //creation of RESTful web services.
 @CrossOrigin(origins = "http://localhost:4200")
 
 public class UserController
 {
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     UserService service;
 
-    @RequestMapping("/users")
+    //Mapping to get all users
+    @GetMapping
     public ResponseEntity <List<User>> getAllUsers(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -34,50 +37,44 @@ public class UserController
     }
 
     //Display user data by id
-    @RequestMapping("/users/{id}")
-    public User getUserById(@PathVariable("id") long id)
-    {
-        User userdetails = userRepository.getOne( id );
-        return userdetails;
-    }
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getEmployeeById(@PathVariable("id") Long id)
+            throws RecordNotFoundException {
+        User entity = service.getUserById(id);
 
-    //Add a new user details
-    @RequestMapping(method = RequestMethod.POST, value="/users")
-    public void saveUser(@RequestBody User user)
-    {
-        userRepository.save(user);
+        return new ResponseEntity<User>(entity, new HttpHeaders(), HttpStatus.OK);
     }
 
     //Deleting the user by Id
-    @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")
-    public void deleteUser(@PathVariable("id") long id)
-    {
-       userRepository.deleteById( id );
+    @DeleteMapping("/{id}")
+    public HttpStatus deleteUserById(@PathVariable("id") Long id)
+            throws RecordNotFoundException {
+        service.deleteUserById(id);
+        return HttpStatus.OK;
     }
+
+
+    // Insert user record
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public User addUser(@RequestBody User user)
+    {
+        return service.addUser(user);
+    }
+
+
 
     //Updating a user's details
-    @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}")
-    public void updateUser(@RequestBody User user)
-    {
-        userRepository.save(user);
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateUser(@RequestBody User user) {
+        try {
+            service.updateUser(user);
+            return new ResponseEntity<String>(HttpStatus.OK);
+        }catch(NoSuchElementException ex){
+            // log the error message
+            System.out.println(ex.getMessage());
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        }
     }
-    // @PutMapping("/users/{id}")
-//    User updateUser(@RequestBody User updated_user, @PathVariable Long id)
-//    {
-//
-//        return userRepository.findById(id)
-//                .map(user -> {
-//                    user.setFirstName(updated_user.getFirstName());
-//                    user.setLastName(updated_user.getLastName());
-//                    user.setEmail(updated_user.getEmail());
-//                    user.setPhone(updated_user.getPhone());
-//                    return userRepository.save(user);
-//                })
-//                .orElseGet(() -> {
-//                    updated_user.setId(id);
-//                    return userRepository.save(updated_user);
-//                });
-//    }
-
 
 }
