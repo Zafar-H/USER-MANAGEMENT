@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -57,8 +58,9 @@ public class UserController
     // Insert user record
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User addUser(@RequestBody User user)
+    public User addUser(@Valid @RequestBody User user)
     {
+
         return service.addUser(user);
     }
 
@@ -66,7 +68,7 @@ public class UserController
 
     //Updating a user's details
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@RequestBody User user) {
+    public ResponseEntity<String> updateUser(@Valid @RequestBody User user) {
         try {
             service.updateUser(user);
             return new ResponseEntity<String>(HttpStatus.OK);

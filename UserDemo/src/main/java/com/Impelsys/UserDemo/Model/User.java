@@ -2,8 +2,13 @@
 package com.Impelsys.UserDemo.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 
 @Entity   //specifies that the class is an entity
@@ -16,17 +21,21 @@ public class User
     private  long id;
 
     @Column(name = "first_name")
+    @NotBlank(message = "Enter valid first name")
     // Specifies the mapped column for a persistent property or field.
     private String firstName;
 
     @Column(name = "last_name")
+    @NotBlank(message = "Enter valid last name")
     private String lastName;
 
     @Column(name = "email")
+    @Email(message = "Enter valid email address")
     private String email;
 
     @Column(name = "phone")
-    private long phone;
+    @Size(min = 10, max = 12, message = "Enter valid phone number")
+    private String phone;
 
     //Getters and Setters for all the fields
     public long getId()
@@ -69,12 +78,12 @@ public class User
         this.email = email;
     }
 
-    public long getPhone()
+    public String getPhone()
     {
         return phone;
     }
 
-    public void setPhone(long phone)
+    public void setPhone(String phone)
     {
         this.phone = phone;
     }
