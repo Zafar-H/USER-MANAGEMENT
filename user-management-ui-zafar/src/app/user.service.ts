@@ -8,7 +8,7 @@ import { IUser } from './user';
 })
 export class UserService {
 
-  private url:string= "http://localhost:8080";
+  private url:string= "http://localhost:8080/users";
 
   constructor(private http : HttpClient) { }
 
@@ -18,10 +18,8 @@ export class UserService {
   }
 
   createUser(user:any) {
-    this.http.post(this.url + "/users/", user)
-      .subscribe( response => {
-        console.log("added");
-      });
+    this.http.post(this.url, user)
+      .subscribe();
   }
 
   getUserById(userId: string) {
@@ -30,15 +28,11 @@ export class UserService {
 
   updateUser(userId: string, user: any) {
     this.http.put(this.url+ '/' + userId, user)
-    .subscribe( response => {
-      console.log("updated");
-    });
+    .subscribe();
   }
 
   deleteUser(userId: string, user: any) {
     this.http.delete(this.url+ '/' +userId, user)
-      .subscribe( response => {
-        console.log("deleted");
-      });
+      .subscribe();
   }
 }

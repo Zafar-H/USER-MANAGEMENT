@@ -1,21 +1,61 @@
 <div class="container">
-    <form #f="ngForm" (ngSubmit)="save(f.value)">
+    <form [formGroup]="form" (ngSubmit)="save(form.value)">
         <div class="form-group">
             <label for="firstName">First Name:</label>
-            <input type="text" ngModel class="form-control" id="firstName" name="firstName">
+            <input 
+                type="text" 
+                formControlName="firstName"
+                id="firstName" 
+                name="firstName" 
+                class="form-control">
+            <div class="alert alert-danger" *ngIf="firstName.touched && firstName.invalid">
+                <div *ngIf="firstName.errors.required">First Name required</div>
+                <div *ngIf="firstName.errors.shouldBeAlphabet">Only alphabets are accepted</div>
+            </div>
         </div>
         <div class="form-group">
             <label for="lastName">Last Name:</label>
-            <input type="text" ngModel class="form-control" id="lastName" name="lastName">
+            <input 
+                type="text" 
+                formControlName="lastName"
+                id="lastName" 
+                name="lastName"
+                class="form-control">
+            <div class="alert alert-danger" *ngIf="lastName.touched && lastName.invalid">
+                <div *ngIf="lastName.errors.required">Last Name required</div>
+                <div *ngIf="lastName.errors.shouldBeAlphabet">Only alphabets are accepted</div>
+            </div>
         </div>
         <div class="form-group">
             <label for="phone">Phone:</label>
-            <input type="text" ngModel class="form-control" id="phone" name="phone">
+            <input 
+                type="text" 
+                formControlName="phone"
+                id="phone" 
+                name="phone"
+                class="form-control">
+            <div class="alert alert-danger" *ngIf="phone.touched && phone.invalid">
+                <div *ngIf="phone.errors.required">Phone Number required.</div>
+                <div *ngIf="phone.errors.shouldBeNumber">Only numeric values are accepted.</div>
+                <div *ngIf="phone.errors.cannotContainSpace">Cannot Contain Space.</div>
+                <div *ngIf="phone.errors.minlength">Phone number should have atleast {{phone.errors.minlength.requiredLength}} digits.</div>
+                <div *ngIf="phone.errors.maxlength">Phone number can only have {{phone.errors.maxlength.requiredLength}} digits.</div>
+            </div>
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" ngModel class="form-control" id="email" name="email" placeholder="name@example.com">
+            <input 
+                type="email" 
+                formControlName="email"
+                id="email" 
+                name="email" 
+                placeholder="name@example.com"
+                class="form-control">
+            <div class="alert alert-danger" *ngIf="email.touched && email.invalid">
+                <div *ngIf="email.errors.required">Email id required</div>
+                <div *ngIf="email.errors.ShouldBeMailFormat">Email id should be in 'name@example.com' format</div>
+            </div>                
         </div>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Add <fa-icon [icon]="addIcon"></fa-icon></button>
     </form>
 </div>

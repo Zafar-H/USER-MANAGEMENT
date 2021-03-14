@@ -1,29 +1,51 @@
-<table class="table table-striped table-responsive-md">
-    <thead>
-        <tr>
-            <th colspan="5" style="text-align: center;">Users List</th>
-        </tr>
-        <tr>
-            <th>User Id</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone Number</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let user of users">
-            <td>{{ user.id }}</td>
-            <td>{{ user.firstName }}</td>
-            <td>{{ user.lastName }}</td>
-            <td>{{ user.phone }}</td>
-            <td>{{ user.email }}</td>
-            <td>
-                <button class="btn btn-primary" [routerLink]="['/users/', user.user_id]">Edit</button>
+<div fxLayout fxLayoutAlign="center center">
+    <mat-form-field fxFlex="50%">
+        <input matInput type="text" (keyup)="filter($event.target.value)" placeholder="Search...">
+    </mat-form-field>
+</div>
+
+<div fxLayout fxLayoutAlign="center center">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" fxFlex="100%">
+
+        <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-dark font-weight-bolder"> First Name </th>
+            <td mat-cell *matCellDef="let user"> {{user.firstName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-dark font-weight-bolder"> Last name </th>
+            <td mat-cell *matCellDef="let user"> {{user.lastName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-dark font-weight-bolder"> Phone Number
+            </th>
+            <td mat-cell *matCellDef="let user"> {{user.phone}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-dark font-weight-bolder"> Email </th>
+            <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef class="text-dark font-weight-bolder"> Edit </th>
+            <td mat-cell *matCellDef="let user">
+                <button mat-icon-button class="btn btn-primary" [routerLink]="['/users/', user.id]">
+                    <fa-icon [icon]="editIcon"></fa-icon>
+                </button>
             </td>
-            <td>
-                <button class="btn btn-primary" (click)="delete(user)">Delete</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+</div>
+<div class="alert alert-warning" *ngIf="dataNotFound == true">Searched data not found!!!</div>
+
+<div fxLayout fxLayoutAlign="center center">
+    <mat-paginator [length]="totalData" [pageSize]="initialPageLength" [pageSizeOptions]="pageSizeOptions"
+        fxFlex="100%">
+    </mat-paginator>
+</div>

@@ -4,11 +4,12 @@ import { UsersComponent } from './users/users.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   {
     path : '', 
-    component : UsersComponent
+    component : HomeComponent
   },
   {
     path : 'users', 
