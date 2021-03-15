@@ -3,6 +3,16 @@
         <input matInput type="text" (keyup)="filter($event.target.value)" placeholder="Search...">
     </mat-form-field>
 </div>
+<!-- <div fxLayout fxLayoutAlign="center center">
+    <mat-form-field fxFlex="50%">
+        <mat-label>Sort By...</mat-label>
+        <mat-select >
+            <mat-option *ngFor="let data of sortByData" [value]="data.value" (click)="sortBy(data.value)">
+                {{data.templateValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div> -->
 
 <div fxLayout fxLayoutAlign="center center">
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" fxFlex="100%">
@@ -45,7 +55,10 @@
 <div class="alert alert-warning" *ngIf="dataNotFound == true">Searched data not found!!!</div>
 
 <div fxLayout fxLayoutAlign="center center">
-    <mat-paginator [length]="totalData" [pageSize]="initialPageLength" [pageSizeOptions]="pageSizeOptions"
+    <mat-paginator 
+        [length]="totalData" 
+        [pageSize]="initialPageLength" 
+        [pageSizeOptions]="pageSizeOptions"
         fxFlex="100%">
     </mat-paginator>
 </div>

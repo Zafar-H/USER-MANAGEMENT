@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IUser } from './user';
 
-@Injectable({
+@Injectable({ 
   providedIn: 'root'
 })
 export class UserService {
@@ -35,4 +35,9 @@ export class UserService {
     this.http.delete(this.url+ '/' +userId, user)
       .subscribe();
   }
+
+  sort(input: string) {
+    return this.http.get<IUser[]>(this.url+ '?sortBy='+input);
+  }
+
 }

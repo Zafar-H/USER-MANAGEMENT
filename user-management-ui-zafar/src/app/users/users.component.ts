@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faSort } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { IUser } from '../user';
 import { Sort, MatSort } from '@angular/material/sort';
@@ -22,8 +22,16 @@ export class UsersComponent implements OnInit, OnDestroy {
   //Specifying the order of table columns to be displayed...
   displayedColumns: string[] = ['firstName', 'lastName', 'phone', 'email', 'edit'];
 
+  sortByData = [
+    {value:'firstName', templateValue:'First Name'},
+    {value:'lastName', templateValue:'Last Name'},
+    {value:'phone', templateValue:'Phone Number'},
+    {value:'email', templateValue:'Email'},
+  ]
+
   public users: IUser[];
   editIcon = faPen;
+  sortIcon = faSort;
   isDataAvailable: boolean = false;
   filteredUsers : IUser[];
   subscription : Subscription;
@@ -74,10 +82,12 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.dataNotFound = true;
   }
 
-  
-
-
-  
-
+  sortBy(query: string) {
+    this.userService.sort(query)
+      .subscribe(data => {
+        this.dataSource = data;
+      });
+      console.log(query);
+  }
 
 }
