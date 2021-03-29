@@ -51,15 +51,13 @@
                 required  
                 id="email" 
                 name="email" 
-                onchange="shouldBeEmailFormat(email.value)"
                 placeholder="name@example.com"
                 class="form-control">
             <div class="alert alert-danger" *ngIf="email.touched && !email.valid">
                 Email id required
             </div>
         </div>
-        <button type="submit" class="btn btn-primary" [disabled]="!f.valid">Update <fa-icon [icon]="editIcon"></fa-icon></button>&nbsp;
-        <button class="btn btn-danger" (click)="delete(f.value)">Delete <fa-icon [icon]="deleteIcon"></fa-icon></button>
+        <button class="btn btn-primary" [disabled]="!f.valid">Update <fa-icon [icon]="editIcon"></fa-icon></button>
     </form>
 </div> 
 

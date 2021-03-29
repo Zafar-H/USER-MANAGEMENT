@@ -1,43 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { IUser } from './user';
+import { DataService } from './services/data.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Injectable({ 
   providedIn: 'root'
 })
-export class UserService {
+export class UserService extends DataService{
 
-  private url:string= "http://localhost:8080/users";
+  //private url:string= "http://localhost:8080/users";
 
-  constructor(private http : HttpClient) { }
+  constructor(http : HttpClient) {
+    super("http://localhost:8080/users", http);
+   }
 
-  getUsers() : Observable<IUser[]>
-  {
-    return this.http.get<IUser[]>(this.url);
-  }
-
-  createUser(user:any) {
-    this.http.post(this.url, user)
-      .subscribe();
-  }
-
-  getUserById(userId: string) {
-    return this.http.get<IUser[]>(this.url+ '/' + userId);
-  }
-
-  updateUser(userId: string, user: any) {
-    this.http.put(this.url+ '/' + userId, user)
-    .subscribe();
-  }
-
-  deleteUser(userId: string, user: any) {
-    this.http.delete(this.url+ '/' +userId, user)
-      .subscribe();
-  }
-
-  sort(input: string) {
-    return this.http.get<IUser[]>(this.url+ '?sortBy='+input);
-  }
+   form = new FormGroup({
+    $key : new FormControl(null),
+    firstName : new FormControl(''),
+    lastName : new FormControl(''),
+    phone : new FormControl(''),
+    email : new FormControl('')
+  });
+  
 
 }

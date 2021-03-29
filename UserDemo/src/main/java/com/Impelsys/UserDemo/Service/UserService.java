@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +25,58 @@ public class UserService {
         return repository.save(user);
     }
 
-    public List <User> getAllUsers(Integer pageNo, Integer pageSize, String sortBy)
+    public List <User> getAllUsers(Integer pageNo, Integer pageSize, String sortBy, String sortDirection)
     {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() :
+                Sort.by(sortBy).descending();
+
+        Pageable paging = PageRequest.of(pageNo, pageSize, sort);
 
         Page <User> pagedResult = repository.findAll(paging);
-
         if(pagedResult.hasContent()) {
             return pagedResult.getContent();
         } else {
             return new ArrayList <User>();
         }
+    }
+
+    public List<User> listAll(Integer pageNo, Integer pageSize, String sortBy, String sortDirection ,String keyword) {
+        if (keyword != null)
+        {
+            Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() :
+                    Sort.by(sortBy).descending();
+
+            Pageable paging = PageRequest.of(pageNo, pageSize, sort);
+            Page <User> pagedResult = repository.search(keyword,paging);
+
+            if(pagedResult.hasContent()) {
+                return pagedResult.getContent();
+            } else {
+                return new ArrayList <User>();
+            }
+        }
+        else
+        {
+            Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() :
+                    Sort.by(sortBy).descending();
+
+            Pageable paging = PageRequest.of(pageNo, pageSize, sort);
+
+            Page <User> pagedResult = repository.findAll(paging);
+            if(pagedResult.hasContent()) {
+                return pagedResult.getContent();
+            } else {
+                return new ArrayList <User>();
+            }
+        }
+
+    }
+
+
+    @Transactional(readOnly = true)
+    public long getCountOfEntities() {
+        long count = repository.count();
+        return count;
     }
 
     public User getUserById(Long id) throws RecordNotFoundException
@@ -62,7 +104,7 @@ public class UserService {
 
     public void updateUser(User newuser) {
         // check if the user with the passed id exists or not
-       // User userDB = repository.findById(user.getUserById()).orElseThrow();
+        // User userDB = repository.findById(user.getUserById()).orElseThrow();
         // If user exists then updated
         long id = newuser.getId();
         repository.findById(id)

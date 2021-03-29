@@ -4,6 +4,7 @@ import { UserService } from '../user.service';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FormFieldValidators } from '../common/validators/form-field-validators';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-add-user',
@@ -52,19 +53,22 @@ export class AddUserComponent implements OnInit {
     return this.form.get('email');
   } 
   
-  user:any = {};
+  user:any = {}; 
   addIcon = faUserPlus;
 
   constructor(
     private router: Router,
-    private userService: UserService) { }
+    private userService: UserService,
+    private notificationService: NotificationService) { }
 
   ngOnInit(): void {
   }
 
   //Function to save user details 
   save(user: any) {
-    this.userService.createUser(user);
+    this.userService.create(user)
+    .subscribe();
+    this.notificationService.success("Added successfully.");
     this.router.navigate(['/users']);
   }
 

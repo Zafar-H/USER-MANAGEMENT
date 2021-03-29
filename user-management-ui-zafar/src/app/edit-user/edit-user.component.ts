@@ -4,6 +4,8 @@ import { UserService } from '../user.service';
 import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FormFieldValidators } from '../common/validators/form-field-validators';
+import { IUser } from '../user';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-edit-user',
@@ -53,16 +55,17 @@ export class EditUserComponent implements OnInit {
   }
 
   user:any = {};
-  id:any;
+  id:string;
   editIcon = faPencilAlt;
   deleteIcon = faTrash;
 
   constructor(
     private router: Router, 
     private route: ActivatedRoute,
-    private userService: UserService) {
+    private userService: UserService,
+    private notificationService: NotificationService) {
       this.id = this.route.snapshot.paramMap.get('id');
-      this.userService.getUserById(this.id)
+      this.userService.getDataById(this.id)
         .subscribe(p => {
           this.user = p;
         });     
@@ -72,18 +75,15 @@ export class EditUserComponent implements OnInit {
   }
 
   //Function to update selected user details
-  update(user: any) {
-    console.log(user.phone);
-    this.userService.updateUser(this.id, this.user);
+  update(user: IUser[]) {
+    this.userService.update(this.user.id, this.user)
+    .subscribe();
+    this.notificationService.success("Updated successfully.");
     this.router.navigate(['/users']);
   }
 
-  //function to delete selected user
-  delete(user: any) {
-    if(confirm('Are you sure, you want to delete?')) {
-      this.userService.deleteUser(this.id, this.user);
-      this.router.navigate['/users'];
-    }
-  }
+
+
+  
 
 }

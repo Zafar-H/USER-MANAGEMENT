@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -15,6 +15,11 @@ import { HomeComponent } from './home/home.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatComponentsModule } from './mat-components/mat-components.module';
+import { UserService } from './user.service';
+import { AppErrorHandler } from './common/app-error-handler';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+//import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+//import { ConfirmDialogModule } from './confirm-dialog/confirm-dialog.module';
 
 
 @NgModule({
@@ -25,7 +30,9 @@ import { MatComponentsModule } from './mat-components/mat-components.module';
     UsersComponent,
     EditUserComponent,
     PageNotFoundComponent,
-    HomeComponent
+    HomeComponent,
+    ConfirmDialogComponent
+    //ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -36,8 +43,13 @@ import { MatComponentsModule } from './mat-components/mat-components.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatComponentsModule
+    //ConfirmDialogModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    UserService,
+    {provide: ErrorHandler, useClass: AppErrorHandler}
+  ],
+  bootstrap: [AppComponent],
+  entryComponents:[UsersComponent, ConfirmDialogComponent]
 })
 export class AppModule { }
